@@ -18,6 +18,10 @@ namespace VirtualKeyboard
         {
             IDX = idx;
             m_hangeulList = hangeuls;
+            foreach( var it in hangeuls )
+            {
+                it.IDX = idx;
+            }
 
         }
         public override string ToString()

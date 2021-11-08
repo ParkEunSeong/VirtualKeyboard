@@ -104,8 +104,13 @@ namespace VirtualKeyboard
                 }
                 var value = curInputValue.VALUE;
 
-
-                if (curInputValue.TYPE == Hangeul.Type.JUNGSUNG
+                if (m_lastInputValue != null 
+                    && m_lastInputValue.TYPE == Hangeul.Type.JUNGSUNG
+                    && curInputValue.TYPE == Hangeul.Type.JUNGSUNG )
+                {
+                    m_curHangeul.AddHangeul(curInputValue);
+                }
+                else if (curInputValue.TYPE == Hangeul.Type.JUNGSUNG
                     && !m_lastInputValue.IsDot && !curInputValue.IsDot
                     && m_curHangeul.GetCurrentType() == Hangeul.Type.JONGSUNG
                     )
@@ -114,9 +119,21 @@ namespace VirtualKeyboard
                     m_combineHangeulList.Add(m_curHangeul);
                     m_curHangeul = new CombineHangeul(jongsung, curInputValue);
                 }
+                else if ( curInputValue.IsDot
+                    && m_lastInputValue.TYPE == Hangeul.Type.CHOSUNG
+                    && m_curHangeul.GetJUNGSUNG() != null )
+                {
+                    var jongsung = m_curHangeul.GetJONGSUNG();
+                    m_combineHangeulList.Add(m_curHangeul);
+                    m_curHangeul = new CombineHangeul(jongsung, curInputValue);
+                }
                 else
                 {
-                    m_curHangeul.AddHangeul(curInputValue);
+                    if ( !m_curHangeul.AddHangeul(curInputValue) )
+                    {
+                        m_combineHangeulList.Add(m_curHangeul);
+                        m_curHangeul = new CombineHangeul(curInputValue);
+                    }
                 }
 
               

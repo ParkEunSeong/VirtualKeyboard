@@ -19,6 +19,10 @@ namespace VirtualKeyboard
         public char VALUE { get; }
         public Type TYPE { get; }
         public bool IsDot { get => VALUE == 'ㆍ'; }
+        public bool IsDot2 { get => VALUE == 'ᆢ'; }
+        public int IDX { get; set; }
+        public static readonly string HOLE2 = "ᆢ";
+        public static readonly string HOLE = "ㆍ";
         public Hangeul ( char value, Type type )
         {
             VALUE = value;

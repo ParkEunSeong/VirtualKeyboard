@@ -62,7 +62,7 @@ namespace VirtualKeyboard
 
             else if (JUNGSUNG.IsDot && input.VALUE == 'ㅡ')
                 return new Hangeul('ㅗ', Hangeul.Type.JUNGSUNG);
-            else if (JUNGSUNG.VALUE == 'ㅗ' && input.IsDot )
+            else if (JUNGSUNG.VALUE == 'ㅗ' && input.IsDot)
                 return new Hangeul('ㅛ', Hangeul.Type.JUNGSUNG);
 
             else if (JUNGSUNG.VALUE == 'ㅡ' && input.IsDot)
@@ -72,15 +72,24 @@ namespace VirtualKeyboard
 
             else if (JUNGSUNG.IsDot && input.VALUE == 'ㅣ')
                 return new Hangeul('ㅓ', Hangeul.Type.JUNGSUNG);
-            else if (JUNGSUNG.IsDot && input.VALUE == 'ㅓ')
+            else if (JUNGSUNG.IsDot2 && input.VALUE == 'ㅣ')
                 return new Hangeul('ㅕ', Hangeul.Type.JUNGSUNG);
 
-
-
+            else if (JUNGSUNG.IsDot && input.VALUE == 'ㆍ')
+                return new Hangeul('ᆢ', Hangeul.Type.JUNGSUNG);
+            else if (JUNGSUNG.VALUE == 'ㅗ' && input.VALUE == 'ㅣ')
+                return new Hangeul('ㅚ', Hangeul.Type.JUNGSUNG);
             return null;
         }
-        public void AddHangeul( Hangeul hangeul )
+        public bool AddHangeul( Hangeul hangeul )
         {
+            if (JONGSUNG != null && JONGSUNG.IDX != hangeul.IDX 
+                && ( JONGSUNG != null && hangeul.TYPE == Hangeul.Type.CHOSUNG )
+                || ( JONGSUNG != null && hangeul.TYPE == Hangeul.Type.JUNGSUNG ) )
+            {
+                return false;
+            }
+
             if ( hangeul.TYPE == Hangeul.Type.CHOSUNG && JUNGSUNG == null )
             {
                 CHOSUNG = hangeul;
@@ -89,6 +98,7 @@ namespace VirtualKeyboard
             {
                 if (JUNGSUNG != null && hangeul.IsDot )
                 {
+                    
                     JUNGSUNG = CombineDot(hangeul);
                 }
                 else if ( JUNGSUNG != null && !hangeul.IsDot )
@@ -111,6 +121,7 @@ namespace VirtualKeyboard
                         Debug.Print(list[i].VALUE.ToString());
                 }
             }
+            return true;
         }
         public Hangeul.Type GetCurrentType()
         {
